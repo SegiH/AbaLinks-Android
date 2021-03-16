@@ -104,12 +104,12 @@ class ManageInstanceLinks : AppCompatActivity(), AdapterView.OnItemSelectedListe
           // Add to Firebase
           if (DataService.useFirebase) {
               val database = FirebaseDatabase.getInstance()
-              var myRef = database.getReference("MyLinks/" + addMyLinksName.editText?.text.toString())
+              val myRef = database.getReference("MyLinks/" + addMyLinksName.editText?.text.toString())
               myRef.setValue(addMyLinksURL.editText?.text.toString());
           } else {
               val requestQueue: RequestQueue = Volley.newRequestQueue(this)
 
-              val request = JsonArrayRequest(Request.Method.GET, DataService.JSONBaseURL +  "?MyLinks-Instances-Auth=" + DataService.JSONAuthToken + "&task=addURL&Name=" + addMyLinksName.editText?.text.toString() + "&URL=" + addMyLinksURL.editText?.text.toString(), null,
+              val request = JsonArrayRequest(Request.Method.GET, DataService.JSONInstancesBaseURL +  "?MyLinks-Instances-Auth=" + DataService.JSONAuthToken + "&task=addURL&Name=" + addMyLinksName.editText?.text.toString() + "&URL=" + addMyLinksURL.editText?.text.toString(), null,
                       { _ ->
                       },
                       {
@@ -133,12 +133,12 @@ class ManageInstanceLinks : AppCompatActivity(), AdapterView.OnItemSelectedListe
           // Delete from Firebase
           if (DataService.useFirebase) {
               val database = FirebaseDatabase.getInstance()
-              var myRef = database.getReference("MyLinks/" + DataService.instanceURLs[deletingItemIndex].Name)
+              val myRef = database.getReference("MyLinks/" + DataService.instanceURLs[deletingItemIndex].Name)
               myRef.removeValue()
           } else {
               val requestQueue: RequestQueue = Volley.newRequestQueue(this)
 
-              val request = JsonArrayRequest(Request.Method.GET, DataService.JSONBaseURL +  "?MyLinks-Instances-Auth=" + DataService.JSONAuthToken + "&task=deleteURL&Name=" + DataService.instanceURLs[deletingItemIndex].Name, null,
+              val request = JsonArrayRequest(Request.Method.GET, DataService.JSONInstancesBaseURL +  "?MyLinks-Instances-Auth=" + DataService.JSONAuthToken + "&task=deleteURL&Name=" + DataService.instanceURLs[deletingItemIndex].Name, null,
                       { _ ->
                       },
                       {

@@ -1,5 +1,6 @@
 package com.segihovav.mylinks_android
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -21,6 +22,7 @@ class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListen
      private lateinit var typeIDSpinner: Spinner
      private lateinit var builder: AlertDialog.Builder
 
+     @SuppressLint("SetTextI18n")
      override fun onCreate(savedInstanceState: Bundle?) {
           DataService.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
           this.setTheme(if (DataService.sharedPreferences.getBoolean("DarkThemeOn", false)) DataService.darkMode else DataService.lightMode)
@@ -50,7 +52,7 @@ class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListen
                     if (extras.getBoolean(applicationContext.packageName + ".IsAdding")) {
                          isAdding = true
 
-                         titleBar.text = "New link"
+                         titleBar.text = getString(R.string.AddNewLink)
                     }
                } catch (e: Exception) {
                     isAdding = false
@@ -112,14 +114,14 @@ class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListen
                { _ ->
                },
                {
-                    DataService.alert(builder, message="An error occurred " + if(!isAdding) "saving" else "adding" + " the link with the error " + it.toString(),finish={ finish() }, OKCallback=null)
+                    DataService.alert(builder, message="An error occurred " + if(!isAdding) "saving" else "adding the link with the error $it",finish={ finish() }, OKCallback=null)
                })
 
           requestQueue.add(request)
      }
 
      fun saveClick(v: View) {
-          var getLinkDataEndpoint: String
+          val getLinkDataEndpoint: String
           var params: String
 
           val name=if (Name.editText?.text != null) Name.editText?.text else ""
@@ -169,11 +171,6 @@ class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListen
 
                for (i in DataService.myLinksTypes.indices) {
                     val linkTypeName=if (DataService.myLinksTypes[i].Name != null) DataService.myLinksTypes[i].Name else ""
-
-                    if (linkTypeName == typeIDSpinner.selectedItem) {
-                         //params="&rowID=${this.myLinkItem?.ID}&columnName=TypeID&columnValue=${DataService.myLinksTypes[i].ID}"
-                         //processData(getLinkDataEndpoint, params)
-                    }
                }
 
                params="&Name=${name}&URL=${url}&Type=${typeIDSpinner.selectedItem}"

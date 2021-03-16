@@ -15,5 +15,6 @@
     <string name="name">Name</string>
     <string name="url">URL</string>
     <string name="type">Type</string>
-  <string name="addURL">Manage MyLinks Instance URLs</string>string>
+  <string name="addURL">Manage MyLinks Instance URLs</string>
+    <string name="AddNewLink">New link</string>string>
 </resources>

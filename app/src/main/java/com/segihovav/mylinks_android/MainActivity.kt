@@ -44,9 +44,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, AdapterView.OnItemS
      override fun onCreate(savedInstanceState: Bundle?) {
           DataService.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
-          DataService.init(this)
-
-          //DataService.setContext(this.baseContext)
+          DataService.init(this.applicationContext)
 
           this.setTheme(if (DataService.sharedPreferences.getBoolean("DarkThemeOn", false)) DataService.darkMode else DataService.lightMode)
 
@@ -63,7 +61,8 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, AdapterView.OnItemS
 
           this.isLoading = true
 
-          val request = JsonArrayRequest(Request.Method.GET, DataService.JSONBaseURL +  "?MyLinks-Instances-Auth=" + DataService.JSONAuthToken + "&task=getURLs", null,
+          // Get instance URLS
+          val request = JsonArrayRequest(Request.Method.GET, DataService.JSONInstancesBaseURL +  "?MyLinks-Instances-Auth=" + DataService.JSONAuthToken + "&task=getURLs", null,
                { response ->
                     var jsonarray: JSONArray = JSONArray()
 
@@ -109,7 +108,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, AdapterView.OnItemS
           // init swipe listener
           mSwipeRefreshLayout.setOnRefreshListener(this)
           mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, android.R.color.holo_green_dark, android.R.color.holo_orange_dark, android.R.color.holo_blue_dark)
-          mSwipeRefreshLayout.setOnRefreshListener { if (this != null && !this.isLoading) readJSONData("Links",DataService.getLinksDataEndpoint,::parseLinksJSON,true); searchView.text = searchView.text }
+          mSwipeRefreshLayout.setOnRefreshListener { if (!this.isLoading) readJSONData("Links",DataService.getLinksDataEndpoint,::parseLinksJSON,true); searchView.text = searchView.text }
 
           episodeListView = findViewById(R.id.episodeList)
 
@@ -239,7 +238,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, AdapterView.OnItemS
                     return true
                }
                R.id.action_add -> { // Add menu
-                    var intent = Intent(this, AddEditLinkActivity::class.java)
+                    val intent = Intent(this, AddEditLinkActivity::class.java)
 
                     intent.putExtra(applicationContext.packageName + ".IsAdding", true)
 

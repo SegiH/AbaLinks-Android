@@ -96,7 +96,7 @@ class RecyclerTouchListener(var act: Activity, recyclerView: RecyclerView) : OnI
           mLongClickPerformed = true
 
           if (!bgVisible && touchedPosition >= 0 && !unClickableRows.contains(touchedPosition) && !isRViewScrolling) {
-               if (longClickVibrate) { }
+               //if (longClickVibrate) { }
                mRowLongClickListener.onRowLongClicked(touchedPosition)
           }
      }
@@ -370,7 +370,7 @@ class RecyclerTouchListener(var act: Activity, recyclerView: RecyclerView) : OnI
 
           when (motionEvent.actionMasked) {
                MotionEvent.ACTION_DOWN -> {
-                    if (mPaused) { /*break*/ }
+                    //if (mPaused) { /*break*/ }
 
                     // Find the child view that was touched (perform a hit test)
                     val rect = Rect()
@@ -474,9 +474,9 @@ class RecyclerTouchListener(var act: Activity, recyclerView: RecyclerView) : OnI
                     run {
                          handler.removeCallbacks(mLongPressed)
                          //if (mLongClickPerformed) break
-                         if (false) {
+                         /*if (false) {
                               //break
-                         }
+                         }*/
 
                          //if (touchedPosition < 0) break
 
@@ -619,9 +619,9 @@ class RecyclerTouchListener(var act: Activity, recyclerView: RecyclerView) : OnI
                }
                MotionEvent.ACTION_MOVE -> {
                     //if (mLongClickPerformed) break
-                    if (mPaused || !swipeable) {
+                    /*if (mPaused || !swipeable) {
                          //break
-                    }
+                    }*/
 
                     if (!::mVelocityTracker.isInitialized)
                          return false

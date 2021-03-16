@@ -5,16 +5,9 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
-import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.Volley
 import com.google.android.material.switchmaterial.SwitchMaterial
-import org.json.JSONArray
-import org.json.JSONException
 
 class SettingsActivity : AppCompatActivity() {
      private lateinit var switchDarkMode: SwitchMaterial
@@ -77,8 +70,6 @@ class SettingsActivity : AppCompatActivity() {
      }
 
      fun loadInstanceURLsFromFirebase() {
-          DataService.init()
-
           DataService.myLinksInstancesDataAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,DataService.getInstanceDisplayNames() as List<String>)
 
           // attaching data adapter to spinner
