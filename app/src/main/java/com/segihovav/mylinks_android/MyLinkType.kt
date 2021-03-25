@@ -6,7 +6,7 @@ import android.os.Parcelable
 data class MyLinkType(var ID: Int, var Name: String? = ""): Parcelable {
      constructor(parcel: Parcel) : this(
           parcel.readInt(),
-          parcel.readString()) { }
+          parcel.readString())
 
      companion object CREATOR : Parcelable.Creator<MyLinkType> {
           override fun createFromParcel(parcel: Parcel): MyLinkType {

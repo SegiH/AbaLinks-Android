@@ -26,7 +26,7 @@ class DataService: AppCompatActivity() {
           @JvmStatic var myLinksTypes: ArrayList<MyLinkType> = ArrayList()
           @JvmStatic var myLinksTypeNames: ArrayList<String> = ArrayList()
           @JvmStatic var MyLinksTitle: String = ""
-          @JvmStatic var instanceURLs: ArrayList<InstanceURLType> = ArrayList();
+          @JvmStatic var instanceURLs: ArrayList<InstanceURLType> = ArrayList()
           @JvmStatic lateinit var sharedPreferences: SharedPreferences
           @JvmStatic lateinit var myLinksInstancesDataAdapter: ArrayAdapter<String>
 
@@ -50,8 +50,8 @@ class DataService: AppCompatActivity() {
 
           @JvmStatic fun init(thisContext: Context) {
                for (currInstance: InstanceURLType in this.instanceURLs) {
-                    if (this.MyLinksActiveURL == currInstance.URL)
-                         this.MyLinksTitle = currInstance.DisplayName
+                    if (this.MyLinksActiveURL == currInstance.url)
+                         this.MyLinksTitle = currInstance.displayName
                }
 
                if (!useFirebase)
@@ -93,11 +93,14 @@ class DataService: AppCompatActivity() {
                myRefAdd.setValue("https://emalinks.hovav.org");*/
           }
 
-          fun getInstanceDisplayNames(): MutableList<String> {
+          fun getInstanceDisplayNames(isManagingInstances: Boolean = false): MutableList<String> {
                val myLinkInstanceURLSNames: MutableList<String> = mutableListOf()
 
+               if (!isManagingInstances)
+                    myLinkInstanceURLSNames.add("")
+
                for (currInstance in this.instanceURLs) {
-                    myLinkInstanceURLSNames.add(currInstance.DisplayName)
+                    myLinkInstanceURLSNames.add(currInstance.displayName)
                }
 
                return myLinkInstanceURLSNames
@@ -105,8 +108,8 @@ class DataService: AppCompatActivity() {
 
           fun getActiveInstanceName(): String {
                for (currInstance in this.instanceURLs) {
-                    if (this.MyLinksActiveURL == currInstance.URL + if (currInstance.URL.takeLast(1) != "/") "/" else "")
-                         return currInstance.Name
+                    if (this.MyLinksActiveURL == currInstance.url + if (currInstance.url.takeLast(1) != "/") "/" else "")
+                         return currInstance.name
                }
 
                return ""
@@ -114,9 +117,9 @@ class DataService: AppCompatActivity() {
 
           fun getActiveInstanceDisplayName(): String {
             for (currInstance in this.instanceURLs) {
-                 if (this.MyLinksActiveURL == currInstance.URL + if (currInstance.URL.takeLast(1) != "/") "/" else "") {
-                      this.MyLinksTitle = currInstance.DisplayName
-                      return currInstance.DisplayName
+                 if (this.MyLinksActiveURL == currInstance.url + if (currInstance.url.takeLast(1) != "/") "/" else "") {
+                      this.MyLinksTitle = currInstance.displayName
+                      return currInstance.displayName
                  }
             }
 

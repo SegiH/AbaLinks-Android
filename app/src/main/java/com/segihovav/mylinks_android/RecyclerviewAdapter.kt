@@ -11,8 +11,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class RecyclerviewAdapter internal constructor(private val mContext: Context, private val myLinks: MutableList<MyLink>, private val myLinksTypes: MutableList<MyLinkType>) : RecyclerView.Adapter<RecyclerviewAdapter.MyViewHolder>() {
-     var darkMode: Boolean = false
-     var rowFG: LinearLayout? = null
+     private var darkMode: Boolean = false
+     private var rowFG: LinearLayout? = null
+
      override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
           val view: View = LayoutInflater.from(mContext).inflate(R.layout.link_item, parent, false)
           rowFG=view.findViewById(R.id.rowFG)
@@ -43,7 +44,7 @@ class RecyclerviewAdapter internal constructor(private val mContext: Context, pr
      }
 
      @JvmName("setDarkMode1")
-     public fun setDarkMode(_darkMode: Boolean) {
+     fun setDarkMode(_darkMode: Boolean) {
           this.darkMode=_darkMode
      }
 

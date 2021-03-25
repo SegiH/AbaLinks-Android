@@ -1,7 +1,7 @@
 package com.segihovav.mylinks_android
 
 class InstanceURLType(_Name: String, _URL: String, _DisplayName: String) {
-     var Name: String = _Name
-     var URL: String = _URL
-     var DisplayName: String = _DisplayName
+     var name: String = _Name
+     var url: String = _URL
+     var displayName: String = _DisplayName
 }

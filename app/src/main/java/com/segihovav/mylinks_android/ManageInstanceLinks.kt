@@ -1,13 +1,13 @@
 package com.segihovav.mylinks_android
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +28,9 @@ class ManageInstanceLinks : AppCompatActivity(), AdapterView.OnItemSelectedListe
      override fun onCreate(savedInstanceState: Bundle?) {
           val layoutManager: RecyclerView.LayoutManager
 
+          DataService.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+          this.setTheme(if (DataService.sharedPreferences.getBoolean("DarkThemeOn", false)) DataService.darkMode else DataService.lightMode)
+
           super.onCreate(savedInstanceState)
           setContentView(R.layout.manage_instance_links)
 
@@ -36,14 +39,14 @@ class ManageInstanceLinks : AppCompatActivity(), AdapterView.OnItemSelectedListe
 
           manageLinksRecyclerListView = findViewById(R.id.URLList)
 
-          recyclerviewAdapterInstance = ManageInstanceLinksRecyclerviewAdapter(this, DataService.getInstanceDisplayNames())
+          recyclerviewAdapterInstance = ManageInstanceLinksRecyclerviewAdapter(this, DataService.getInstanceDisplayNames(true))
+
+          recyclerviewAdapterInstance?.setDarkMode(DataService.sharedPreferences.getBoolean("DarkThemeOn", false))
 
           layoutManager = LinearLayoutManager(applicationContext)
 
           manageLinksRecyclerListView.layoutManager = layoutManager
           manageLinksRecyclerListView.itemAnimator = DefaultItemAnimator()
-
-          //registerForContextMenu(manageLinksRecyclerListView)
 
           manageLinksRecyclerListView.adapter = recyclerviewAdapterInstance
 
@@ -60,16 +63,12 @@ class ManageInstanceLinks : AppCompatActivity(), AdapterView.OnItemSelectedListe
                .setSwipeable(R.id.rowFG, R.id.rowBG, object : RecyclerTouchListener.OnSwipeOptionsClickListener {
                     override fun onSwipeOptionClicked(viewID: Int, position: Int) {
                         when (viewID) {
-                            R.id.delete_link -> DataService.alert(builder, message="Are you sure that you want to delete this link ?", confirmDialog=true, finish={ finish() }) { deleteRow((position)) }
+                            R.id.delete_link -> DataService.alert(builder, message="Are you sure that you want to delete this link ?", confirmDialog=true, finish={ finish() }) { deleteLink((position)) }
                         }
                     }
                 })
 
           manageLinksRecyclerListView.addOnItemTouchListener(touchListener)
-     }
-
-     override fun onConfigurationChanged(newConfig: Configuration) {
-          super.onConfigurationChanged(newConfig)
      }
 
      override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) { }
@@ -90,7 +89,7 @@ class ManageInstanceLinks : AppCompatActivity(), AdapterView.OnItemSelectedListe
 
           // Make sure that this URL has not been added before
           for (i in DataService.instanceURLs.indices) {
-               if (DataService.instanceURLs[i].URL == addMyLinksURL.editText?.text.toString()) {
+               if (DataService.instanceURLs[i].url == addMyLinksURL.editText?.text.toString()) {
                  Toast.makeText(applicationContext, "This URL has already been added enter the URL", Toast.LENGTH_LONG).show()
                  return
                }
@@ -105,12 +104,12 @@ class ManageInstanceLinks : AppCompatActivity(), AdapterView.OnItemSelectedListe
           if (DataService.useFirebase) {
               val database = FirebaseDatabase.getInstance()
               val myRef = database.getReference("MyLinks/" + addMyLinksName.editText?.text.toString())
-              myRef.setValue(addMyLinksURL.editText?.text.toString());
+              myRef.setValue(addMyLinksURL.editText?.text.toString())
           } else {
               val requestQueue: RequestQueue = Volley.newRequestQueue(this)
 
               val request = JsonArrayRequest(Request.Method.GET, DataService.JSONInstancesBaseURL +  "?MyLinks-Instances-Auth=" + DataService.JSONAuthToken + "&task=addURL&Name=" + addMyLinksName.editText?.text.toString() + "&URL=" + addMyLinksURL.editText?.text.toString(), null,
-                      { _ ->
+                      {
                       },
                       {
                           //DataService.alert(builder= AlertDialog.Builder(this), message="An error occurred adding an Instance URL with the error $it. Please check your network connection", finish={ finish() }, OKCallback=null)
@@ -124,7 +123,7 @@ class ManageInstanceLinks : AppCompatActivity(), AdapterView.OnItemSelectedListe
           addMyLinksURL.editText?.setText("")
     }
 
-     fun deleteRow(deletingItemIndex: Int = -1) {
+     fun deleteLink(deletingItemIndex: Int = -1) {
           if (deletingItemIndex == -1) {
               DataService.alert(builder=AlertDialog.Builder(this), message="deletingItemIndex was not provided", finish={ finish() }, OKCallback=null)
               return
@@ -133,13 +132,13 @@ class ManageInstanceLinks : AppCompatActivity(), AdapterView.OnItemSelectedListe
           // Delete from Firebase
           if (DataService.useFirebase) {
               val database = FirebaseDatabase.getInstance()
-              val myRef = database.getReference("MyLinks/" + DataService.instanceURLs[deletingItemIndex].Name)
+              val myRef = database.getReference("MyLinks/" + DataService.instanceURLs[deletingItemIndex].name)
               myRef.removeValue()
           } else {
               val requestQueue: RequestQueue = Volley.newRequestQueue(this)
 
-              val request = JsonArrayRequest(Request.Method.GET, DataService.JSONInstancesBaseURL +  "?MyLinks-Instances-Auth=" + DataService.JSONAuthToken + "&task=deleteURL&Name=" + DataService.instanceURLs[deletingItemIndex].Name, null,
-                      { _ ->
+              val request = JsonArrayRequest(Request.Method.GET, DataService.JSONInstancesBaseURL +  "?MyLinks-Instances-Auth=" + DataService.JSONAuthToken + "&task=deleteURL&Name=" + DataService.instanceURLs[deletingItemIndex].name, null,
+                      {
                       },
                       {
                           //DataService.alert(builder= AlertDialog.Builder(this), message="An error occurred adding an Instance URL with the error $it. Please check your network connection", finish={ finish() }, OKCallback=null)

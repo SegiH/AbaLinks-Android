@@ -17,8 +17,8 @@ import com.google.android.material.textfield.TextInputLayout
 class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
      private var myLinkItem: MyLink? = null
      private var isAdding: Boolean = false
-     private lateinit var Name: TextInputLayout
-     private lateinit var URL: TextInputLayout
+     private lateinit var name: TextInputLayout
+     private lateinit var url: TextInputLayout
      private lateinit var typeIDSpinner: Spinner
      private lateinit var builder: AlertDialog.Builder
 
@@ -34,9 +34,9 @@ class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListen
 
           val titleBar=findViewById<TextView>(R.id.TitleBar)
 
-          Name=findViewById(R.id.Name)
+          name=findViewById(R.id.Name)
 
-          URL=findViewById(R.id.URL)
+          url=findViewById(R.id.URL)
 
           typeIDSpinner = findViewById(R.id.TypeID)
 
@@ -74,15 +74,15 @@ class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListen
                // Existing item
                if (!isAdding) {
                     // Link is passed as a parcel
-                    myLinkItem=extras.getParcelable<MyLink>(applicationContext.packageName + ".LinkItem") // Get Link Item
+                    myLinkItem=extras.getParcelable(applicationContext.packageName + ".LinkItem") // Get Link Item
 
                     // set the title
                     titleBar.text = "${DataService.getActiveInstanceDisplayName()} # ${myLinkItem?.ID}"
 
                     // Set Name, URL and Type fields from the parcel
-                    Name.editText?.setText(myLinkItem?.Name)
+                    name.editText?.setText(myLinkItem?.Name)
 
-                    URL.editText?.setText(myLinkItem?.URL)
+                    url.editText?.setText(myLinkItem?.URL)
 
                     for (i in DataService.myLinksTypes.indices) {
                          if (DataService.myLinksTypes[i].ID == myLinkItem?.TypeID) {
@@ -111,7 +111,7 @@ class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListen
 
           val request = JsonArrayRequest(
                Request.Method.GET, DataService.MyLinksActiveURL + getLinkDataEndpoint + params, null,
-               { _ ->
+               {
                },
                {
                     DataService.alert(builder, message="An error occurred " + if(!isAdding) "saving" else "adding the link with the error $it",finish={ finish() }, OKCallback=null)
@@ -124,8 +124,8 @@ class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListen
           val getLinkDataEndpoint: String
           var params: String
 
-          val name=if (Name.editText?.text != null) Name.editText?.text else ""
-          val url=if (URL.editText?.text != null) URL.editText?.text else ""
+          val name=if (name.editText?.text != null) name.editText?.text else ""
+          val url=if (url.editText?.text != null) url.editText?.text else ""
 
           // Validate all fields
           if (name != null && name.isEmpty()) {

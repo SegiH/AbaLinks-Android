@@ -8,7 +8,7 @@ data class MyLink(var ID: Int, var Name: String?, var URL: String?, var TypeID: 
           parcel.readInt(),
           parcel.readString(),
           parcel.readString(),
-          parcel.readInt()) { }
+          parcel.readInt())
 
      companion object CREATOR : Parcelable.Creator<MyLink> {
           override fun createFromParcel(parcel: Parcel): MyLink {

@@ -3,11 +3,11 @@ package com.segihovav.mylinks_android
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.google.android.material.switchmaterial.SwitchMaterial
+import kotlin.system.exitProcess
 
 class SettingsActivity : AppCompatActivity() {
      private lateinit var switchDarkMode: SwitchMaterial
@@ -28,7 +28,7 @@ class SettingsActivity : AppCompatActivity() {
 
           switchDarkMode = findViewById(R.id.switchDarkMode)
 
-          myLinksURLs = findViewById<Spinner>(R.id.LinkURLSpinner)
+          myLinksURLs = findViewById(R.id.LinkURLSpinner)
 
           switchDarkMode.isChecked = DataService.sharedPreferences.getBoolean("DarkThemeOn", false)
 
@@ -43,8 +43,8 @@ class SettingsActivity : AppCompatActivity() {
 
            if (DataService.sharedPreferences.getString("MyLinksActiveURL", "") != "") {
                 for (i in DataService.instanceURLs.indices)
-                     if (DataService.instanceURLs[i].URL == DataService.sharedPreferences.getString("MyLinksActiveURL", ""))
-                          myLinksURLs.setSelection(i)
+                     if (DataService.instanceURLs[i].url == DataService.sharedPreferences.getString("MyLinksActiveURL", ""))
+                          myLinksURLs.setSelection(i+1) // add 1 because empty string is added to spinner values
            } else {
                DataService.alert(androidx.appcompat.app.AlertDialog.Builder(this), message = "Please select the active MyLinks URL", finish = { finish() }, OKCallback = null)
            }
@@ -69,7 +69,7 @@ class SettingsActivity : AppCompatActivity() {
           startActivity(intent)
      }
 
-     fun loadInstanceURLsFromFirebase() {
+     /*fun loadInstanceURLsFromFirebase() {
           DataService.myLinksInstancesDataAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,DataService.getInstanceDisplayNames() as List<String>)
 
           // attaching data adapter to spinner
@@ -77,7 +77,7 @@ class SettingsActivity : AppCompatActivity() {
 
           if (DataService.sharedPreferences.getString("MyLinksActiveURL", "") != "") {
                for (i in DataService.instanceURLs.indices)
-                    if (DataService.instanceURLs[i].URL == DataService.sharedPreferences.getString("MyLinksActiveURL", ""))
+                    if (DataService.instanceURLs[i].url == DataService.sharedPreferences.getString("MyLinksActiveURL", ""))
                          myLinksURLs.setSelection(i)
           } else {
                DataService.alert(androidx.appcompat.app.AlertDialog.Builder(this), message = "Please select the active MyLinks URL", finish = { finish() }, OKCallback = null)
@@ -96,7 +96,7 @@ class SettingsActivity : AppCompatActivity() {
           params = myLinksURLs.layoutParams as ViewGroup.MarginLayoutParams
           params.setMargins(450, 150, 0, 0)
           myLinksURLs.layoutParams=params
-     }
+     }*/
 
      fun manageURLsClick(v: View?) {
           val intent = Intent(this, ManageInstanceLinks::class.java)
@@ -117,22 +117,23 @@ class SettingsActivity : AppCompatActivity() {
           DataService.useFirebase=useFirebaseInstanceURLS.isChecked
 
           for (i in DataService.instanceURLs.indices) {
-               if (DataService.instanceURLs[i].DisplayName == myLinksURLs.selectedItem) {
-                    editor.putString("MyLinksActiveURL", DataService.instanceURLs[i].URL)
-                    DataService.MyLinksActiveURL = DataService.instanceURLs[i].URL.toString()
-                    break;
+               if (DataService.instanceURLs[i].displayName == myLinksURLs.selectedItem) {
+                    editor.putString("MyLinksActiveURL", DataService.instanceURLs[i].url)
+                    DataService.MyLinksActiveURL = DataService.instanceURLs[i].url
+                    break
                }
           }
 
           editor.apply()
 
-          if (darkModeToggled)
-               finishAffinity()
-
           val intent = Intent(this, MainActivity::class.java)
 
           if (darkModeToggled)
                intent.putExtra(applicationContext.packageName + ".DarkModeToggled", true)
+
+          if (darkModeToggled)
+               finishAffinity()
+          //     exitProcess(0)
 
           startActivity(intent)
      }
