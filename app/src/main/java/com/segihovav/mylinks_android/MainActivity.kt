@@ -4,15 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri.*
 import android.os.Bundle
-import android.os.Handler
 import android.text.Editable
 import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
-import android.util.AttributeSet
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -227,17 +227,17 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, AdapterView.OnItemS
           // Search search menu icon based on the current theme
           searchMenuItem.setIcon(R.drawable.search_white)
 
-          /*var addMenuItem = menu.getItem(1)
-          var addItemSpan = SpannableString("Add")
+          val addMenuItem = menu.getItem(1)
+          val addItemSpan = SpannableString("Add")
           addItemSpan.setSpan(ForegroundColorSpan(if (DataService.sharedPreferences.getBoolean("DarkThemeOn", false)) Color.WHITE else Color.BLACK), 0, addItemSpan.length, 0)
           addItemSpan.setSpan(BackgroundColorSpan(if (DataService.sharedPreferences.getBoolean("DarkThemeOn", false)) Color.BLACK else Color.WHITE), 0, addItemSpan.length, 0)
           addMenuItem.title = addItemSpan
 
-          var settingsMenuItem = menu.getItem(2)
-          var settingsSpan = SpannableString("Settings")
+          val settingsMenuItem = menu.getItem(2)
+          val settingsSpan = SpannableString("Settings")
           settingsSpan.setSpan(ForegroundColorSpan(if (DataService.sharedPreferences.getBoolean("DarkThemeOn", false)) Color.WHITE else Color.BLACK), 0, settingsSpan.length, 0)
           settingsSpan.setSpan(BackgroundColorSpan(if (DataService.sharedPreferences.getBoolean("DarkThemeOn", false)) Color.BLACK else Color.WHITE), 0, settingsSpan.length, 0)
-          settingsMenuItem.title = settingsSpan*/
+          settingsMenuItem.title = settingsSpan
 
           return true
      }
@@ -286,8 +286,9 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, AdapterView.OnItemS
           val darkModeToggled = intent.getBooleanExtra(applicationContext.packageName + ".DarkModeToggled", false)
 
           if (darkModeToggled) {
-               this.setTheme(if (DataService.sharedPreferences.getBoolean("DarkThemeOn", false)) DataService.darkMode else DataService.lightMode)
-               recyclerviewAdapter?.setDarkMode(DataService.sharedPreferences.getBoolean("DarkThemeOn", false))
+               finish()
+               //this.setTheme(if (DataService.sharedPreferences.getBoolean("DarkThemeOn", false)) DataService.darkMode else DataService.lightMode)
+               //recyclerviewAdapter?.setDarkMode(DataService.sharedPreferences.getBoolean("DarkThemeOn", false))
           }
 
           title=DataService.getActiveInstanceDisplayName()
@@ -371,7 +372,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, AdapterView.OnItemS
           episodeListView.adapter = recyclerviewAdapter
      }
 
-     /*private fun isNetworkAvailable(): Boolean {
+     private fun isNetworkAvailable(): Boolean {
           val cm = this.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
           val n = cm.activeNetwork
@@ -384,7 +385,7 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, AdapterView.OnItemS
           }
 
           return false
-     }*/
+     }
 
      private fun loadSettingsActivity() {
           val intent = Intent(this, SettingsActivity::class.java)

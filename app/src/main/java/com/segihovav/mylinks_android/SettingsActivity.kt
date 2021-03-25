@@ -7,7 +7,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.google.android.material.switchmaterial.SwitchMaterial
-import kotlin.system.exitProcess
 
 class SettingsActivity : AppCompatActivity() {
      private lateinit var switchDarkMode: SwitchMaterial
@@ -61,7 +60,7 @@ class SettingsActivity : AppCompatActivity() {
 
      fun darkModeClick(v: View?) {
           darkModeToggled = true
-          Toast.makeText(applicationContext, "The app will be close when you click on save for this to take effect" + if (switchDarkMode.isChecked) ". You must have Dark Mode enabled on Android " else "", Toast.LENGTH_SHORT).show()
+          Toast.makeText(applicationContext, "The app will close when you click on save for this to take effect" + if (switchDarkMode.isChecked) ". You must have Dark Mode enabled on Android " else "", Toast.LENGTH_SHORT).show()
      }
 
      fun goBackClick(v: View?) {

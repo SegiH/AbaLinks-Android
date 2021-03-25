@@ -23,7 +23,7 @@ class RecyclerviewAdapter internal constructor(private val mContext: Context, pr
      override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
           val myLinkItem: MyLink = myLinks[position]
 
-          val displaySize=60
+          val displaySize=80
 
           holder.linkName.text= if (myLinkItem.Name?.length!! > displaySize) myLinkItem.Name?.substring(0,displaySize) else myLinkItem.Name
 
