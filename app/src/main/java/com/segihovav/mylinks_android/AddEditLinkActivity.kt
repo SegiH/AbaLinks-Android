@@ -61,11 +61,7 @@ class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListen
                // remove "All" link type when adding/editing a link
                DataService.myLinksTypeNames.remove("All")
 
-               // When adding a link, add blank item
-               if (isAdding)
-                    DataService.myLinksTypeNames.add(0,"")
-
-               // Creating adapter for spinner - For some reason when adding, we need to use android.R.layout.simple_spinner_item when adding or the TypeID spinner items will have too large of a gap between each item
+               // Creating adapter for spinner - For some reason when adding, we need to use android.R.layout.simple_spinner_item when adding or the Type spinner items will have too large of a gap between each item
                val dataAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, DataService.myLinksTypeNames)
 
                // attaching data adapter to spinner
@@ -173,7 +169,7 @@ class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListen
                     val linkTypeName=if (DataService.myLinksTypes[i].Name != null) DataService.myLinksTypes[i].Name else ""
                }
 
-               params="&Name=${name}&URL=${url}&Type=${typeIDSpinner.selectedItem}"
+               params="&Name=${name}&URL=${url}&Type=${typeIDSpinner.selectedItem}&InstanceName=${DataService.getActiveInstanceName()}"
 
                processData(getLinkDataEndpoint, params)
           }

@@ -48,6 +48,9 @@ class DataService: AppCompatActivity() {
                alert.show()
           }
 
+          @JvmStatic fun getActiveURL(): String {
+               return this.MyLinksActiveURL
+          }
           @JvmStatic fun init(thisContext: Context) {
                for (currInstance: InstanceURLType in this.instanceURLs) {
                     if (this.MyLinksActiveURL == currInstance.url)
@@ -86,7 +89,7 @@ class DataService: AppCompatActivity() {
                })
 
                // Write the data to Firebase. Uncomment me if this data is deleted from the DB
-               /*ar myRefAdd = database.getReference("MyLinks/AbaLinks")
+               /*var myRefAdd = database.getReference("MyLinks/AbaLinks")
                myRefAdd.setValue("https://abalinks.hovav.org");
 
                myRefAdd = database.getReference("MyLinks/EmaLinks")
@@ -108,7 +111,9 @@ class DataService: AppCompatActivity() {
 
           fun getActiveInstanceName(): String {
                for (currInstance in this.instanceURLs) {
-                    if (this.MyLinksActiveURL == currInstance.url + if (currInstance.url.takeLast(1) != "/") "/" else "")
+                    val currURL= currInstance.url + if (currInstance.url.takeLast(1) != "/") "/" else ""
+                    val MyLinksActiveURL = this.MyLinksActiveURL + if (this.MyLinksActiveURL.takeLast(1) != "/") "/" else ""
+                    if (MyLinksActiveURL == currURL)
                          return currInstance.name
                }
 
@@ -117,10 +122,12 @@ class DataService: AppCompatActivity() {
 
           fun getActiveInstanceDisplayName(): String {
             for (currInstance in this.instanceURLs) {
-                 if (this.MyLinksActiveURL == currInstance.url + if (currInstance.url.takeLast(1) != "/") "/" else "") {
-                      this.MyLinksTitle = currInstance.displayName
+                 val currURL= currInstance.url + if (currInstance.url.takeLast(1) != "/") "/" else ""
+                 val MyLinksActiveURL = this.MyLinksActiveURL + if (this.MyLinksActiveURL.takeLast(1) != "/") "/" else ""
+
+                 if (MyLinksActiveURL == currURL)
+                      //this.MyLinksTitle = currInstance.displayName
                       return currInstance.displayName
-                 }
             }
 
             return ""
