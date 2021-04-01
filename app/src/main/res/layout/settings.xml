@@ -54,6 +54,9 @@
          app:layout_constraintLeft_toLeftOf="parent"
          app:layout_constraintTop_toBottomOf="@id/TitleBar" />
 
+    <!-- Disabled on 03-30-21 because there's a Material bug where switching
+         theme doesn't change the background color of the options menu until
+         you restart the app
     <com.google.android.material.switchmaterial.SwitchMaterial
          android:id="@+id/switchDarkMode"
          android:layout_width="wrap_content"
@@ -63,18 +66,19 @@
          app:layout_constraintTop_toBottomOf="@id/LinkURLSpinner"
          android:layout_marginTop="20dp"
          android:switchPadding = "15dp"
-         android:onClick="darkModeClick"/>
+         android:onClick="darkModeClick"/>-->
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
+  <!--Commented out because dark mode was disabled. app:layout_constraintTop_toBottomOf="@id/switchDarkMode"-->
+   <!-- <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switchInstanceURLSource"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/use_firebase"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/switchDarkMode"
+        app:layout_constraintTop_toBottomOf="@id/LinkURLSpinner"
         android:layout_marginTop="20dp"
         android:switchPadding = "15dp"
-        android:onClick="useFirebaseClick"/>
+        android:onClick="useFirebaseClick"/>-->
     <Button
          android:id="@+id/saveButton"
          android:layout_width="180dp"

@@ -9,8 +9,8 @@ import androidx.preference.PreferenceManager
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
-     private lateinit var switchDarkMode: SwitchMaterial
-     private lateinit var useFirebaseInstanceURLS: SwitchMaterial
+     //private lateinit var switchDarkMode: SwitchMaterial
+     //private lateinit var useFirebaseInstanceURLS: SwitchMaterial
      private lateinit var myLinksURLs: Spinner
 
      private var darkModeToggled = false
@@ -25,11 +25,11 @@ class SettingsActivity : AppCompatActivity() {
           val titleBar=findViewById<TextView>(R.id.TitleBar)
           titleBar.text = DataService.MyLinksTitle
 
-          switchDarkMode = findViewById(R.id.switchDarkMode)
+          //switchDarkMode = findViewById(R.id.switchDarkMode)
 
           myLinksURLs = findViewById(R.id.LinkURLSpinner)
 
-          switchDarkMode.isChecked = DataService.sharedPreferences.getBoolean("DarkThemeOn", false)
+          //switchDarkMode.isChecked = DataService.sharedPreferences.getBoolean("DarkThemeOn", false)
 
           DataService.useFirebase = DataService.sharedPreferences.getBoolean("UseFirebase", false)
 
@@ -54,13 +54,13 @@ class SettingsActivity : AppCompatActivity() {
                loadInstanceURLsFromFirebase()
           }*/
 
-          useFirebaseInstanceURLS = findViewById(R.id.switchInstanceURLSource)
-          useFirebaseInstanceURLS.isChecked = DataService.useFirebase
+          //useFirebaseInstanceURLS = findViewById(R.id.switchInstanceURLSource)
+          //useFirebaseInstanceURLS.isChecked = DataService.useFirebase
      }
 
      fun darkModeClick(v: View?) {
           darkModeToggled = true
-          Toast.makeText(applicationContext, "The app will close when you click on save for this to take effect" + if (switchDarkMode.isChecked) ". You must have Dark Mode enabled on Android " else "", Toast.LENGTH_SHORT).show()
+          //Toast.makeText(applicationContext, "The app will close when you click on save for this to take effect" + if (switchDarkMode.isChecked) ". You must have Dark Mode enabled on Android " else "", Toast.LENGTH_SHORT).show()
      }
 
      fun goBackClick(v: View?) {
@@ -110,10 +110,10 @@ class SettingsActivity : AppCompatActivity() {
 
           val editor = DataService.sharedPreferences.edit()
 
-          editor.putBoolean("DarkThemeOn", switchDarkMode.isChecked)
-          editor.putBoolean("UseFirebase", useFirebaseInstanceURLS.isChecked)
+          //editor.putBoolean("DarkThemeOn", switchDarkMode.isChecked)
+          //editor.putBoolean("UseFirebase", useFirebaseInstanceURLS.isChecked)
 
-          DataService.useFirebase=useFirebaseInstanceURLS.isChecked
+          //DataService.useFirebase=useFirebaseInstanceURLS.isChecked
 
           for (i in DataService.instanceURLs.indices) {
                if (DataService.instanceURLs[i].displayName == myLinksURLs.selectedItem) {
@@ -140,9 +140,9 @@ class SettingsActivity : AppCompatActivity() {
      fun useFirebaseClick(v: View?) {
           val editor = DataService.sharedPreferences.edit()
 
-          editor.putBoolean("UseFirebase", useFirebaseInstanceURLS.isChecked)
+          //editor.putBoolean("UseFirebase", useFirebaseInstanceURLS.isChecked)
 
-          DataService.useFirebase=useFirebaseInstanceURLS.isChecked
+          //DataService.useFirebase=useFirebaseInstanceURLS.isChecked
 
           editor.apply()
      }

@@ -17,6 +17,7 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -222,7 +223,15 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, AdapterView.OnItemS
           // Inflate the menu; this adds items to the action bar if it is present.
           menuInflater.inflate(R.menu.menu_main, menu)
 
+          //menu.getItem(0).actionView.setBackgroundColor(Color.RED)
           val searchMenuItem = menu.findItem(R.id.action_search)
+
+          //if (menu.get(0) == null)
+          // System.out.println("*** IT IS" + menu.get(0)+ "***")
+
+          //if (searchMenuItem.actionView == null)
+          //  System.out.println("*** IT IS NULL ***")
+          //searchMenuItem. .actionView.setBackgroundColor(Color.RED)
 
           // Search search menu icon based on the current theme
           searchMenuItem.setIcon(R.drawable.search_white)
@@ -234,6 +243,8 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, AdapterView.OnItemS
           addMenuItem.title = addItemSpan
 
           val settingsMenuItem = menu.getItem(2)
+
+
           val settingsSpan = SpannableString("Settings")
           settingsSpan.setSpan(ForegroundColorSpan(if (DataService.sharedPreferences.getBoolean("DarkThemeOn", false)) Color.WHITE else Color.BLACK), 0, settingsSpan.length, 0)
           settingsSpan.setSpan(BackgroundColorSpan(if (DataService.sharedPreferences.getBoolean("DarkThemeOn", false)) Color.BLACK else Color.WHITE), 0, settingsSpan.length, 0)
