@@ -28,9 +28,6 @@ import org.json.JSONException
 import java.util.*
 import kotlin.collections.ArrayList
 
-// TO DO
-// When toggling dark mode, option context menu doesn't change background color until the app is restarted
-
 class MainActivity : AppCompatActivity(), OnRefreshListener, AdapterView.OnItemSelectedListener {
      private val myLinksList: MutableList<MyLink> = ArrayList()
      private lateinit var searchView: EditText
@@ -379,7 +376,8 @@ class MainActivity : AppCompatActivity(), OnRefreshListener, AdapterView.OnItemS
                val nc = cm.getNetworkCapabilities(n)
 
                //It will check for both wifi and cellular network
-               return nc!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+               if (nc != null)
+                    return nc.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
           }
 
           return false

@@ -25,7 +25,11 @@ class RecyclerviewAdapter internal constructor(private val mContext: Context, pr
 
           val displaySize=80
 
-          holder.linkName.text= if (myLinkItem.Name?.length!! > displaySize) myLinkItem.Name?.substring(0,displaySize) else myLinkItem.Name
+          val nameLength=myLinkItem.Name?.length
+
+          if (nameLength != null) {
+               holder.linkName.text= if (nameLength > displaySize) myLinkItem.Name?.substring(0,displaySize) else myLinkItem.Name
+          }
 
           // Reduce font size
           holder.linkName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)

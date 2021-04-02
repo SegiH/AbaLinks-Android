@@ -25,6 +25,7 @@ class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListen
      @SuppressLint("SetTextI18n")
      override fun onCreate(savedInstanceState: Bundle?) {
           DataService.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+
           this.setTheme(if (DataService.sharedPreferences.getBoolean("DarkThemeOn", false)) DataService.darkMode else DataService.lightMode)
 
           super.onCreate(savedInstanceState)
@@ -47,7 +48,7 @@ class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListen
           val extras = intent.extras
 
           if (extras != null) {
-               // Get IsAdding extra
+               // Get IsAdding extra flag
                try {
                     if (extras.getBoolean(applicationContext.packageName + ".IsAdding")) {
                          isAdding = true
@@ -58,21 +59,21 @@ class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListen
                     isAdding = false
                }
 
-               // remove "All" link type when adding/editing a link
+               // Remove "All" link type when adding/editing a link
                DataService.myLinksTypeNames.remove("All")
 
                // Creating adapter for spinner - For some reason when adding, we need to use android.R.layout.simple_spinner_item when adding or the Type spinner items will have too large of a gap between each item
                val dataAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, DataService.myLinksTypeNames)
 
-               // attaching data adapter to spinner
+               // Attach data adapter to spinner
                typeIDSpinner.adapter = dataAdapter
 
-               // Existing item
+               // Load existing item
                if (!isAdding) {
-                    // Link is passed as a parcel
+                    // Link item is passed as a parcel
                     myLinkItem=extras.getParcelable(applicationContext.packageName + ".LinkItem") // Get Link Item
 
-                    // set the title
+                    // Set the activity title
                     titleBar.text = "${DataService.getActiveInstanceDisplayName()} # ${myLinkItem?.ID}"
 
                     // Set Name, URL and Type fields from the parcel
@@ -97,11 +98,13 @@ class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListen
 
      override fun onNothingSelected(p0: AdapterView<*>?) { }
 
+     // Event when the user clicks on Go Back
      fun goBackClick(v: View) {
           val intent = Intent(this, MainActivity::class.java)
           startActivity(intent)
      }
 
+     // REST endpoint
      private fun processData(getLinkDataEndpoint: String, params: String) {
           val requestQueue: RequestQueue = Volley.newRequestQueue(this)
 
@@ -116,6 +119,7 @@ class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListen
           requestQueue.add(request)
      }
 
+     // Event when Save button was clicked
      fun saveClick(v: View) {
           val getLinkDataEndpoint: String
           var params: String
@@ -164,10 +168,6 @@ class AddEditLinkActivity: AppCompatActivity(), AdapterView.OnItemSelectedListen
                }
           } else { // Save new item
                getLinkDataEndpoint = "LinkData.php?task=insertRow"
-
-               for (i in DataService.myLinksTypes.indices) {
-                    val linkTypeName=if (DataService.myLinksTypes[i].Name != null) DataService.myLinksTypes[i].Name else ""
-               }
 
                params="&Name=${name}&URL=${url}&Type=${typeIDSpinner.selectedItem}&InstanceName=${DataService.getActiveInstanceName()}"
 
